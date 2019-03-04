@@ -1,4 +1,6 @@
+const chalk = require('chalk')
 const fs = require('fs')
+const _= require('lodash')
 
 const getNotes = () => {
     return 'Getting Notes'
@@ -7,20 +9,34 @@ const getNotes = () => {
 const addNote = (title, body) => {
     const notes = loadNotes()
 
-    const duplicateNotes = notes.filter(note => {
-        return note.title === title
-    })
+    const duplicateNotes = notes.filter(note => note.title === title)
 
     if (duplicateNotes.length === 0) {
         notes.push({
             title,
             body
         })
+        console.log(chalk.green.bold('New Note Added!'))
         saveNotes(notes)
     } else {
-        console.log('Note title taken')
+        console.log(chalk.red.bold('Note Title Taken!'))
     }
     
+}
+
+const removeNote = title => {
+    const notes = loadNotes()
+    const notesCopy = [...notes]
+    notesCopy.filter((note, index) => {
+        if (note.title === title) {
+            notesCopy.splice(index, 1)
+            console.log(chalk.green.bold(`Successfully Removed Note!`))
+            saveNotes(notesCopy)
+        }
+    })
+    if (notes.length <= notesCopy.length) {
+        console.log(chalk.red.bold('No Notes With That Title!'))
+    }
 }
 
 const saveNotes = (notes) => {
@@ -46,9 +62,7 @@ const getNote = title => {
     console.log(`Reading note: ${title}`)
 }
 
-const removeNote = title => {
-    console.log(`Removing note: ${title}`)
-}
+
 
 module.exports = {
     getNotes,

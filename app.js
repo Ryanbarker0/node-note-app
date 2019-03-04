@@ -6,8 +6,7 @@ const notes = require('./notes.js')
 // Set application version
 yargs.version('1.1.0')
 
-// add, remove, read, list
-
+// Add Note
 yargs.command({
     command: 'add',
     describe: 'Add a new note',
@@ -28,11 +27,19 @@ yargs.command({
     }
 })
 
+// Remove Note
 yargs.command({
     command: 'remove',
     describe: 'Remove a note',
-    handler: function () {
-        console.log('removing the note')
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: argv => {
+        notes.removeNote(argv.title)
     }
 })
 
