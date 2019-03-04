@@ -1,30 +1,13 @@
-// var obj = {
-//     name: 'Andrew'
-// };
-// var stringObj = JSON.stringify(obj)
-
-// console.log(stringObj)
-
-// const personString = '{"name": "Ryan", "age": 25}'
-
-// const parsedString = JSON.parse(personString)
-
-// console.log(parsedString.name)
-
 const fs = require('fs')
 
-const originalNote = {
-    title: 'some title',
-    body: 'some body'
+const dataBuffer = fs.readFileSync('notes.json')
+const data = JSON.parse(dataBuffer)
+
+const updateJsonInfo = (name, age) => {
+    data.name = name
+    data.age = age
 }
 
-const originalNoteString = JSON.stringify(originalNote)
+updateJsonInfo('Ryan', 26)
 
-fs.writeFileSync('notes.json', originalNoteString)
-
-const noteString = fs.readFileSync('notes.json')
-
-const note = JSON.parse(noteString)
-
-console.log(typeof note)
-console.log(note.title)
+fs.writeFileSync('notes.json', JSON.stringify(data))
