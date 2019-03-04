@@ -2,9 +2,7 @@ const chalk = require('chalk')
 const fs = require('fs')
 const _= require('lodash')
 
-const getNotes = () => {
-    return 'Getting Notes'
-}
+const log = console.log
 
 const addNote = (title, body) => {
     const notes = loadNotes()
@@ -16,12 +14,11 @@ const addNote = (title, body) => {
             title,
             body
         })
-        console.log(chalk.green.bold('New Note Added!'))
+        log(chalk.green.bold('New Note Added!'))
         saveNotes(notes)
     } else {
-        console.log(chalk.red.bold('Note Title Taken!'))
-    }
-    
+        log(chalk.red.bold('Note Title Taken!'))
+    }  
 }
 
 const removeNote = title => {
@@ -30,12 +27,25 @@ const removeNote = title => {
     notesCopy.filter((note, index) => {
         if (note.title === title) {
             notesCopy.splice(index, 1)
-            console.log(chalk.green.bold(`Successfully Removed Note!`))
+            log(chalk.green.bold(`Successfully Removed Note!`))
             saveNotes(notesCopy)
         }
     })
     if (notes.length <= notesCopy.length) {
-        console.log(chalk.red.bold('No Notes With That Title!'))
+        log(chalk.red.bold('No Notes With That Title!'))
+    }
+}
+
+const listNotes = () => {
+    log('Listing Notes...')
+    const notes = loadNotes()
+    if (notes.length > 0) {
+        log(chalk.blue.bold('Your Notes:'))
+        notes.forEach(note => {
+            log(`Title: ${note.title}`)
+        })
+    } else {
+        log(chalk.red.bold('You Do Not Have Any Notes'))
     }
 }
 
@@ -51,23 +61,11 @@ const loadNotes = () => {
     } catch (e) {
         return []
     }
-
 }
-
-const getAll = () => {
-    console.log('Getting all notes.')
-}
-
-const getNote = title => {
-    console.log(`Reading note: ${title}`)
-}
-
-
 
 module.exports = {
-    getNotes,
+    listNotes,
     addNote,
-    getAll,
     getNote,
     removeNote
 }
